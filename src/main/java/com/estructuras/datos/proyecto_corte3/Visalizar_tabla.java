@@ -4,11 +4,11 @@
  */
 package com.estructuras.datos.proyecto_corte3;
 
+import static com.estructuras.datos.proyecto_corte3.Constants.ARCHIVO;
 import com.opencsv.CSVReader;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.List;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -24,7 +24,6 @@ import javax.swing.table.TableColumnModel;
  * @author g14_0
  */
 public class Visalizar_tabla extends javax.swing.JInternalFrame {
-    private File archivo = new File("C:\\SysCost\\SysCost.csv");
     private CSVReader lectorArchivo = null;
     private DefaultTableModel modeloTabla = new DefaultTableModel();
     private int ancho,alto;
@@ -42,7 +41,7 @@ public class Visalizar_tabla extends javax.swing.JInternalFrame {
     
     private void LoadTable(){
         try {
-            lectorArchivo = new CSVReader(new FileReader(archivo));
+            lectorArchivo = new CSVReader(new FileReader(ARCHIVO));
             String[] fila = null;
             TableColumn column = new TableColumn();
             List<String> listRows = new ArrayList<>();
@@ -80,6 +79,41 @@ public class Visalizar_tabla extends javax.swing.JInternalFrame {
         }
         
     }
+    
+    public void LoadHeaderTable(JTable table){
+        try {
+            lectorArchivo = new CSVReader(new FileReader(ARCHIVO));
+            String[] fila = null;
+            TableColumn column = new TableColumn();
+            List<String> listRows = new ArrayList<>();
+            while ((fila = lectorArchivo.readNext())!= null ) {
+                listRows.add(String.join(",", fila));
+            }
+            String[] listColumn = listRows.get(0).split(",");
+            JTableHeader tableHeader = table.getTableHeader();
+            TableColumnModel tableColumnModel = tableHeader.getColumnModel();
+            TableColumn tableColumn;
+            modeloTabla = (DefaultTableModel) table.getModel();
+            
+            if (tableColumnModel.getColumnCount() != listColumn.length) {
+                int diferencia = listColumn.length - tableColumnModel.getColumnCount();
+                for (int i = 0; i < diferencia; i++) {
+                    table.addColumn(new TableColumn());
+                    modeloTabla.addColumn(new TableColumn());
+                }
+            }
+            for (int i = 0; i < listColumn.length; i++) {
+                tableColumn = tableColumnModel.getColumn(i);
+                tableColumn.setHeaderValue( listColumn[i]);
+                tableHeader.repaint();
+            }
+            table.setSize(ancho, alto);
+            lectorArchivo.close();
+        } catch (Exception e) {
+        }
+        
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
