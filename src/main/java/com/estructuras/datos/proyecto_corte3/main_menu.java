@@ -10,6 +10,8 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.File;
 import java.io.FileWriter;
+import com.estructuras.datos.proyecto_corte3.Constants;
+import static com.estructuras.datos.proyecto_corte3.Constants.*;
 
 /**
  *
@@ -33,14 +35,11 @@ public class main_menu extends javax.swing.JFrame {
     }
     
     private void crearDirectorio(){
-        File directorio = new File("C:\\SysCost\\");
-        File archivo = new File("C:\\SysCost\\SysCost.csv");
-        String archCSV = "C:\\SysCost\\SysCost.csv";
-        directorio.mkdir();
+        DIRECTORIO.mkdir();
         try {
-            if (!archivo.exists()) {
-            archivo.createNewFile();
-            CSVWriter escritorArchivo = new CSVWriter(new FileWriter(archCSV));
+            if (!ARCHIVO.exists()) {
+            ARCHIVO.createNewFile();
+            CSVWriter escritorArchivo = new CSVWriter(new FileWriter(ARCHCV));
             String[] columns = {"Aréa","Costo Empleados","Costo indumentaria","Bonos","Caja menor","Fecha creación"};
             escritorArchivo.writeNext(columns);
             escritorArchivo.close();
@@ -49,6 +48,7 @@ public class main_menu extends javax.swing.JFrame {
             }
         } catch (Exception e) {
                     System.out.println("Error encontrado"+e);
+                    e.printStackTrace();
         }
     }
 
@@ -95,6 +95,11 @@ public class main_menu extends javax.swing.JFrame {
         jMenu3.add(verInfo);
 
         addRegistro.setText("Agregar Registro");
+        addRegistro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addRegistroActionPerformed(evt);
+            }
+        });
         jMenu3.add(addRegistro);
 
         jMenu1.add(jMenu3);
@@ -131,6 +136,12 @@ public class main_menu extends javax.swing.JFrame {
         viewTable.setSize(ancho, alto);
         viewTable.show();
     }//GEN-LAST:event_verInfoActionPerformed
+
+    private void addRegistroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addRegistroActionPerformed
+        Agregar_registro viewTable = new Agregar_registro();
+        jDesktopOperation.add(viewTable);
+        viewTable.setSize(ancho, alto);
+        viewTable.show();    }//GEN-LAST:event_addRegistroActionPerformed
 
     /**
      * @param args the command line arguments
