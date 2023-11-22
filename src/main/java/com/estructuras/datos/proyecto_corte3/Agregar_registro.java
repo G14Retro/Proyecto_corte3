@@ -10,11 +10,9 @@ import com.opencsv.CSVWriter;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
-import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
@@ -63,19 +61,17 @@ public class Agregar_registro extends javax.swing.JInternalFrame {
             listData.add(dataCsv[i].split(","));
         }
         for (int i = 0; i < data.size(); i++) {
-            b = data.get(i).toString();
+            b = data.get(i).toString().trim();
             castData = b.split("],");
         }
         for (int i = 0; i < finalData.length; i++) {
             b = castData[i].trim().replace("[", "").replace("]", "");
-            finalData[i] = b;
+            finalData[i] = b.trim();
             listData.add(finalData[i].split(","));
         }
 
         try {
-            CSVWriter escribirArchivo = new CSVWriter(new FileWriter(ARCHIVO));
-            escribirArchivo.writeAll(listData);
-            escribirArchivo.close();
+            Utils.writeCsv(listData);
         } catch (Exception e) {
             e.printStackTrace();
         }

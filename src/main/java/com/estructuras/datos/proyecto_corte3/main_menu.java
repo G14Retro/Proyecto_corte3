@@ -67,6 +67,7 @@ public class main_menu extends javax.swing.JFrame {
         jMenu3 = new javax.swing.JMenu();
         verInfo = new javax.swing.JMenuItem();
         addRegistro = new javax.swing.JMenuItem();
+        addRegistro1 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -101,6 +102,14 @@ public class main_menu extends javax.swing.JFrame {
             }
         });
         jMenu3.add(addRegistro);
+
+        addRegistro1.setText("Editar Registro");
+        addRegistro1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addRegistro1ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(addRegistro1);
 
         jMenu1.add(jMenu3);
 
@@ -143,6 +152,12 @@ public class main_menu extends javax.swing.JFrame {
         viewTable.setSize(ancho, alto);
         viewTable.show();    }//GEN-LAST:event_addRegistroActionPerformed
 
+    private void addRegistro1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addRegistro1ActionPerformed
+        Editar_registro viewTable = new Editar_registro();
+        jDesktopOperation.add(viewTable);
+        viewTable.setSize(ancho, alto);
+        viewTable.show();    }//GEN-LAST:event_addRegistro1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -180,6 +195,7 @@ public class main_menu extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem addRegistro;
+    private javax.swing.JMenuItem addRegistro1;
     private javax.swing.JDesktopPane jDesktopOperation;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;

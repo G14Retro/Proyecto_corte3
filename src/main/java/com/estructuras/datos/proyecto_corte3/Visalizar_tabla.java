@@ -36,10 +36,10 @@ public class Visalizar_tabla extends javax.swing.JInternalFrame {
         Dimension mainDimension = tk.getScreenSize();
         ancho = (int)mainDimension.getWidth() / 2;
         alto = (int)mainDimension.getHeight() / 2;
-        LoadTable();
+        LoadTable(tableCosts);
     }
     
-    private void LoadTable(){
+    public void LoadTable(JTable table){
         try {
             lectorArchivo = new CSVReader(new FileReader(ARCHIVO));
             String[] fila = null;
@@ -52,10 +52,10 @@ public class Visalizar_tabla extends javax.swing.JInternalFrame {
                 listRows.add(String.join(",", fila));
             }
             String[] listColumn = listRows.get(0).split(",");
-            JTableHeader tableHeader = tableCosts.getTableHeader();
+            JTableHeader tableHeader = table.getTableHeader();
             TableColumnModel tableColumnModel = tableHeader.getColumnModel();
             TableColumn tableColumn;
-            modeloTabla = (DefaultTableModel) tableCosts.getModel();
+            modeloTabla = (DefaultTableModel) table.getModel();
             
             if (tableColumnModel.getColumnCount() != listColumn.length) {
                 int diferencia = listColumn.length - tableColumnModel.getColumnCount();

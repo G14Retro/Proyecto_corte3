@@ -6,8 +6,10 @@ package com.estructuras.datos.proyecto_corte3;
 
 import static com.estructuras.datos.proyecto_corte3.Constants.ARCHIVO;
 import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvValidationException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,5 +43,14 @@ public class Utils {
         }
        
         return resultado;
+    }
+    public static void writeCsv(List<String []> data){
+        try {
+            CSVWriter escribirArchivo = new CSVWriter(new FileWriter(ARCHIVO));
+            escribirArchivo.writeAll(data);
+            escribirArchivo.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
