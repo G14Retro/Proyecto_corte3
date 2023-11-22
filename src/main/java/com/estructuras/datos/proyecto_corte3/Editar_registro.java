@@ -50,6 +50,7 @@ public class Editar_registro extends javax.swing.JInternalFrame {
         tableColumnModel = tableHeader.getColumnModel();
         modeloTabla = (DefaultTableModel) tableCosts.getModel();
         new Visalizar_tabla().LoadTable(tableCosts);
+        BtnModificar.setEnabled(false);
     }
     
     public void editarRegistros(Vector data){
@@ -83,6 +84,18 @@ public class Editar_registro extends javax.swing.JInternalFrame {
         exit = JOptionPane.showInputDialog(rootPane, """
                                                      Datos actualizados exitosamente 
                                                      Sigita Si para modificar y No para Salir""");  
+        while((exit.isEmpty() || exit.isBlank()) || 
+                !(exit.equalsIgnoreCase("si"))&&
+                !(exit.equalsIgnoreCase("no"))){
+            if((exit.isEmpty() || exit.isBlank()) || 
+                !(exit.equalsIgnoreCase("si"))&&
+                !(exit.equalsIgnoreCase("no"))){
+                JOptionPane.showMessageDialog(rootPane, "Debe digitar si para continuar o no para salir");  
+                exit = JOptionPane.showInputDialog(rootPane, """
+                                                 Datos actualizados exitosamente 
+                                                 Sigita Si para modificar y No para Salir""");
+            }
+        }
         if (exit.equalsIgnoreCase("si")) {
             inputSearch.setText(null);
             modeloTabla.removeRow(0);
@@ -90,7 +103,13 @@ public class Editar_registro extends javax.swing.JInternalFrame {
             tableColumnModel = tableHeader.getColumnModel();
             modeloTabla = (DefaultTableModel) tableCosts.getModel();
             new Visalizar_tabla().LoadTable(tableCosts);
+            BtnModificar.setEnabled(false);
             new Editar_registro();
+        }else{
+            inputSearch.setText(null);
+            inputSearch.setEditable(false);
+            BtnModificar.setEnabled(false);
+            btnBuscar.setEnabled(false);
         }
     }
     public List<Integer> getIndex(){
@@ -143,6 +162,7 @@ public class Editar_registro extends javax.swing.JInternalFrame {
         inputSearch = new javax.swing.JTextField();
         btnBuscar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        BtnCancelar = new javax.swing.JButton();
 
         tableCosts.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -170,6 +190,13 @@ public class Editar_registro extends javax.swing.JInternalFrame {
 
         jLabel1.setText("Buscar por ID");
 
+        BtnCancelar.setText("Cancelar");
+        BtnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnCancelarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -178,20 +205,21 @@ public class Editar_registro extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 773, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(17, 17, 17)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(317, 317, 317)
-                                .addComponent(BtnModificar))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(17, 17, 17)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(inputSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(141, 141, 141)
-                                        .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(inputSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(141, 141, 141)
+                                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(BtnCancelar)
+                .addGap(150, 150, 150)
+                .addComponent(BtnModificar)
+                .addGap(242, 242, 242))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -204,7 +232,9 @@ public class Editar_registro extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(BtnModificar)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(BtnModificar)
+                    .addComponent(BtnCancelar))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -214,17 +244,37 @@ public class Editar_registro extends javax.swing.JInternalFrame {
     private void BtnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnModificarActionPerformed
         Vector datos = new Vector();
         datos.add(modeloTabla.getDataVector());
-        editarRegistros(datos);
+        if(!Utils.checkDataIsNull(datos,tableCosts)){
+            JOptionPane.showMessageDialog(rootPane, "Debe ingresar todos los campos");
+        }else{
+            editarRegistros(datos);
+        }
     }//GEN-LAST:event_BtnModificarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         Vector data = new Vector();
         data.add(modeloTabla.getDataVector());
-        searchData(data);
+        if (inputSearch.getText().isBlank() || inputSearch.getText().isEmpty()
+                || !inputSearch.getText().matches("[0-9]")) {
+            JOptionPane.showMessageDialog(rootPane, "Debe ingresar un valor númerico");
+        }else if(Integer.parseInt(inputSearch.getText())<1){
+                        JOptionPane.showMessageDialog(rootPane, "index ingresado debajo del rango minimo");
+        }else if (Integer.parseInt(inputSearch.getText())> modeloTabla.getRowCount()){
+            JOptionPane.showMessageDialog(rootPane, "index ingresado por encima del rango maximo");
+        }
+        else{
+            searchData(data);
+            BtnModificar.setEnabled(true);
+        }
     }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void BtnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCancelarActionPerformed
+        dispose();
+    }//GEN-LAST:event_BtnCancelarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BtnCancelar;
     private javax.swing.JButton BtnModificar;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JTextField inputSearch;

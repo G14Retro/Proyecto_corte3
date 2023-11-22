@@ -13,6 +13,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 
 /**
  *
@@ -21,6 +27,10 @@ import java.util.List;
 public class Utils {
     private static CSVReader lectorArchivo = null;
     static int lengthCsv;
+    private static JTableHeader tableHeader;
+    private static TableColumnModel tableColumnModel;
+    private static TableColumn tableColumn;
+    private static DefaultTableModel modeloTabla = new DefaultTableModel();
     public static String[] getHeaderTable(){
         String[] resultado = null;
         try {
@@ -53,4 +63,50 @@ public class Utils {
             e.printStackTrace();
         }
     }
+    public static void dropAllRows(JTable table){
+        JTableHeader tableHeader;
+        DefaultTableModel modeloTabla = new DefaultTableModel();
+        tableHeader  = table.getTableHeader();
+        tableHeader.getColumnModel();
+        modeloTabla = (DefaultTableModel) table.getModel();
+        for (int i = 0; i < table.getRowCount(); i++) {
+            modeloTabla.removeRow(i);
+        }
+    }
+    public static boolean checkDataIsNull(Vector data,JTable tableCosts){
+        tableHeader  = tableCosts.getTableHeader();
+        tableColumnModel = tableHeader.getColumnModel();
+        modeloTabla = (DefaultTableModel) tableCosts.getModel();
+        List<String[]> listData = new ArrayList<>();
+        String[] castData = new String[modeloTabla.getColumnCount()];
+        String[] dataStrings = new String[modeloTabla.getRowCount()];
+        String[] finalData = new String[modeloTabla.getRowCount()];
+        List<Boolean> resultado = new ArrayList();
+        String b ="";
+                for (int i = 0; i < data.size(); i++) {
+            b = data.get(i).toString().trim();
+            castData = b.split("],");
+        }
+        for (int i = 0; i < finalData.length; i++) {
+            b = castData[i].trim().replace("[", "").replace("]", "");
+            finalData[i] = b.trim();
+            listData.add(finalData[i].split(","));
+        }
+        for (int i = 0; i < finalData.length; i++) {
+            dataStrings = finalData[i].split(",");
+            for (int j = 0; j < dataStrings.length; j++) {
+                if(dataStrings[j].trim().equalsIgnoreCase("null") 
+                        || dataStrings[j].isBlank()){
+                    resultado.add(false);
+                }
+            }
+        }
+        for (int i = 0; i < resultado.size(); i++) {
+            if (!resultado.get(i)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }
