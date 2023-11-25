@@ -4,6 +4,7 @@
  */
 package com.estructuras.datos.proyecto_corte3;
 
+import static com.estructuras.datos.proyecto_corte3.Utils.checkDataIsNumeric;
 import com.opencsv.CSVReader;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -83,7 +84,7 @@ public class Editar_registro extends javax.swing.JInternalFrame {
         Utils.writeCsv(listDataCsv);
         exit = JOptionPane.showInputDialog(rootPane, """
                                                      Datos actualizados exitosamente 
-                                                     Sigita Si para modificar y No para Salir""");  
+                                                     Digita Si para modificar otro dato y No para Salir""");  
         while((exit.isEmpty() || exit.isBlank()) || 
                 !(exit.equalsIgnoreCase("si"))&&
                 !(exit.equalsIgnoreCase("no"))){
@@ -244,10 +245,12 @@ public class Editar_registro extends javax.swing.JInternalFrame {
     private void BtnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnModificarActionPerformed
         Vector datos = new Vector();
         datos.add(modeloTabla.getDataVector());
-        if(!Utils.checkDataIsNull(datos,tableCosts)){
+        if(!Utils.checkDataIsNull(modeloTabla,rootPane)){
             JOptionPane.showMessageDialog(rootPane, "Debe ingresar todos los campos");
         }else{
-            editarRegistros(datos);
+            if (checkDataIsNumeric(modeloTabla,rootPane)) {
+                editarRegistros(datos);
+            }
         }
     }//GEN-LAST:event_BtnModificarActionPerformed
 
@@ -255,7 +258,7 @@ public class Editar_registro extends javax.swing.JInternalFrame {
         Vector data = new Vector();
         data.add(modeloTabla.getDataVector());
         if (inputSearch.getText().isBlank() || inputSearch.getText().isEmpty()
-                || !inputSearch.getText().matches("[0-9]")) {
+                || !inputSearch.getText().matches("[0-9]*")) {
             JOptionPane.showMessageDialog(rootPane, "Debe ingresar un valor númerico");
         }else if(Integer.parseInt(inputSearch.getText())<1){
                         JOptionPane.showMessageDialog(rootPane, "index ingresado debajo del rango minimo");

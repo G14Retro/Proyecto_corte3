@@ -6,11 +6,12 @@ package com.estructuras.datos.proyecto_corte3;
 
 import static com.estructuras.datos.proyecto_corte3.Constants.ARCHIVO;
 import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvValidationException;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.List;
-import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -43,7 +44,6 @@ public class Visalizar_tabla extends javax.swing.JInternalFrame {
         try {
             lectorArchivo = new CSVReader(new FileReader(ARCHIVO));
             String[] fila = null;
-            TableColumn column = new TableColumn();
             List<String> listRows = new ArrayList<>();
             while ((fila = lectorArchivo.readNext())!= null) {
                 /*for (int i = 0; i < fila.length; i++) {
@@ -75,7 +75,7 @@ public class Visalizar_tabla extends javax.swing.JInternalFrame {
             }
             tableCosts.setSize(ancho, alto);
             lectorArchivo.close();
-        } catch (Exception e) {
+        } catch (CsvValidationException | IOException e) {
         }
         
     }
@@ -84,7 +84,6 @@ public class Visalizar_tabla extends javax.swing.JInternalFrame {
         try {
             lectorArchivo = new CSVReader(new FileReader(ARCHIVO));
             String[] fila = null;
-            TableColumn column = new TableColumn();
             List<String> listRows = new ArrayList<>();
             while ((fila = lectorArchivo.readNext())!= null ) {
                 listRows.add(String.join(",", fila));

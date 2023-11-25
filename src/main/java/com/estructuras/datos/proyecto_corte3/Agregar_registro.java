@@ -4,6 +4,7 @@
  */
 package com.estructuras.datos.proyecto_corte3;
 
+import static com.estructuras.datos.proyecto_corte3.Utils.checkDataIsNumeric;
 import static com.estructuras.datos.proyecto_corte3.Utils.dropAllRows;
 import com.opencsv.CSVReader;
 import java.awt.Dimension;
@@ -67,8 +68,8 @@ public class Agregar_registro extends javax.swing.JInternalFrame {
     private void addData(Vector data){
         List<String[]> listData = new ArrayList<>();
         String[] castData = new String[modeloTabla.getColumnCount()];
-        String[] finalData = new String[modeloTabla.getRowCount()];
-        String[] dataCsv = new String[Utils.getHeaderTable().length];
+        String[] finalData = new String[modeloTabla.getColumnCount()];
+        String[] dataCsv = new String[Utils.getHeaderTable().length];       
         String b;
         dataCsv = Utils.getHeaderTable();
         for (int i = 0; i< dataCsv.length; i++) {
@@ -78,9 +79,14 @@ public class Agregar_registro extends javax.swing.JInternalFrame {
             b = data.get(i).toString().trim();
             castData = b.split("],");
         }
-        for (int i = 0; i < finalData.length; i++) {
+        for (int i = 0; i < modeloTabla.getRowCount(); i++) {
             b = castData[i].trim().replace("[", "").replace("]", "");
-            finalData[i] = b.trim();
+            dataCsv[i] = b.trim();
+            dataCsv= dataCsv[i].split(",");
+            for (int j = 0; j < dataCsv.length; j++) {
+                finalData[j]= dataCsv[j].trim();
+            }
+            finalData[i]=String.join(",", finalData);
             listData.add(finalData[i].split(","));
         }
 
@@ -185,7 +191,7 @@ public class Agregar_registro extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+   
     private void BtnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAceptarActionPerformed
         addRow();
     }//GEN-LAST:event_BtnAceptarActionPerformed
@@ -195,14 +201,15 @@ public class Agregar_registro extends javax.swing.JInternalFrame {
         datos.add(modeloTabla.getDataVector());
         if(modeloTabla.getRowCount() == 0){
             JOptionPane.showMessageDialog(rootPane, "No hay filas por agregar");
-                new Agregar_registro(); 
-        }else if(!Utils.checkDataIsNull(datos,tableCosts)){
+        }else if(!Utils.checkDataIsNull(modeloTabla,rootPane)){
                 JOptionPane.showMessageDialog(rootPane, "Debe ingresar todos los campos");
-                new Agregar_registro();
         }else{
-            JOptionPane.showMessageDialog(rootPane, "Datos ingresados exitosamente");
-            addData(datos);
-            dropAllRows(tableCosts);
+            if (checkDataIsNumeric(modeloTabla,rootPane)) {
+                JOptionPane.showMessageDialog(rootPane, "Datos ingresados exitosamente");
+                addData(datos);
+                dropAllRows(tableCosts,modeloTabla.getRowCount());
+            }
+           
         }
     }//GEN-LAST:event_BtnGuardasActionPerformed
 
@@ -219,7 +226,6 @@ public class Agregar_registro extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void BtnCancelar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCancelar1ActionPerformed
-        mn.setVisible(true);
         dispose();
     }//GEN-LAST:event_BtnCancelar1ActionPerformed
 
